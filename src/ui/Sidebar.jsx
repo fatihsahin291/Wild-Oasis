@@ -24,3 +24,9 @@ function Sidebar() {
 }
 
 export default Sidebar;
+
+/*
+curl "https://nwqjkultgmottyyzqfoh.supabase.co/rest/v1/cabins?select=*" ^
+-H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53cWprdWx0Z21vdHR5eXpxZm9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDE1MjgxMjAsImV4cCI6MjAxNzEwNDEyMH0.bYp0uwvZBm493WjWxDkKln8CFnGlVLyXRc2kY7zPNPo" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53cWprdWx0Z21vdHR5eXpxZm9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDE1MjgxMjAsImV4cCI6MjAxNzEwNDEyMH0.bYp0uwvZBm493WjWxDkKln8CFnGlVLyXRc2kY7zPNPo"
+*/
