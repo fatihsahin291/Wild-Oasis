@@ -12,8 +12,9 @@ import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import toast from "react-hot-toast";
+import FormRow from "../../ui/FormRow";
 
-const FormRow = styled.div`
+const FormRow2 = styled.div`
 	display: grid;
 	align-items: center;
 	grid-template-columns: 24rem 1fr 1.2fr;
@@ -52,8 +53,13 @@ const Error = styled.span`
 function CreateCabinForm() {
 	const queryClient = useQueryClient();
 
-	const { register, handleSubmit, reset } =
-		useForm();
+	const {
+		register,
+		handleSubmit,
+		reset,
+		getValues,
+		formState: { errors },
+	} = useForm();
 
 	const { mutate, isLoading: isCreating } =
 		useMutation({
@@ -71,67 +77,122 @@ function CreateCabinForm() {
 		});
 
 	function onSubmit(data) {
-		mutate(data);
+		mutate({ ...data, image: data.image[0] });
+	}
+
+	function onError(errors) {
+		// console.log(errors);
+		return errors;
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit)}>
-			<FormRow>
-				<Label htmlFor="name">Cabin name</Label>
+		<Form
+			onSubmit={handleSubmit(onSubmit, onError)}
+		>
+			<FormRow
+				label="Cabin name"
+				error={errors?.name?.message}
+			>
 				<Input
 					type="text"
 					id="name"
-					{...register("name")}
+					disabled={isCreating}
+					{...register("name", {
+						required: "Cabin name is required",
+					})}
 				/>
 			</FormRow>
 
-			<FormRow>
-				<Label htmlFor="maxCapacity">
-					Maximum capacity
-				</Label>
+			<FormRow
+				label="Maximum capacity"
+				error={errors?.maxCapacity?.message}
+			>
 				<Input
 					type="number"
 					id="maxCapacity"
-					{...register("maxCapacity")}
+					disabled={isCreating}
+					{...register("maxCapacity", {
+						required:
+							"Maximum capacity is required",
+						min: {
+							value: 1,
+							message: "Minimum capacity is 1",
+						},
+					})}
 				/>
 			</FormRow>
 
-			<FormRow>
-				<Label htmlFor="regularPrice">
-					Regular price
-				</Label>
+			<FormRow
+				label="Regular price"
+				error={errors?.regularPrice?.message}
+			>
 				<Input
 					type="number"
 					id="regularPrice"
-					{...register("regularPrice")}
+					disabled={isCreating}
+					{...register("regularPrice", {
+						required: "Regular price is required",
+						min: {
+							value: 1,
+							message: "Minimum price is 1",
+						},
+					})}
 				/>
 			</FormRow>
 
-			<FormRow>
-				<Label htmlFor="discount">Discount</Label>
+			<FormRow
+				label="Discount"
+				error={errors?.discount?.message}
+			>
 				<Input
 					type="number"
 					id="discount"
-					{...register("discount")}
+					disabled={isCreating}
+					{...register("discount", {
+						required: "Discount is required",
+						validate: (value) => {
+							const regularPrice = getValues(
+								"regularPrice"
+							);
+							if (
+								regularPrice &&
+								value >= +regularPrice
+							) {
+								return "Discount must be lower than regular price";
+							}
+							return true;
+						},
+					})}
 					defaultValue={0}
 				/>
 			</FormRow>
 
-			<FormRow>
-				<Label htmlFor="description">
-					Description for website
-				</Label>
+			<FormRow
+				label="Description for website"
+				error={errors?.description?.message}
+			>
 				<Textarea
 					type="number"
 					id="description"
-					{...register("description")}
+					disabled={isCreating}
 					defaultValue=""
+					{...register("description", {
+						required: "This field is required",
+					})}
 				/>
 			</FormRow>
 
-			<FormRow>
-				<Label htmlFor="image">Cabin photo</Label>
-				<FileInput id="image" accept="image/*" />
+			<FormRow
+				label="Cabin photo"
+				error={errors?.image?.message}
+			>
+				<FileInput
+					id="image"
+					accept="image/*"
+					{...register("image", {
+						required: "This field is required",
+					})}
+				/>
 			</FormRow>
 
 			<FormRow>
