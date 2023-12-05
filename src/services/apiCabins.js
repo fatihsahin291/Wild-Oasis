@@ -5,7 +5,8 @@ import supabase, {
 export async function getCabins() {
 	let { data, error } = await supabase
 		.from("cabins")
-		.select("*");
+		.select("*")
+		.order("created_at", { ascending: true });
 
 	if (error) {
 		console.error(error);
@@ -16,34 +17,56 @@ export async function getCabins() {
 	return data;
 }
 
-export async function createCabin(newCabin) {
+export async function createEditCabin(
+	newCabin,
+	id
+) {
+	console.log(newCabin, id);
+
+	const hasImagePath =
+		newCabin.image?.startsWith?.(supabaseUrl);
+
 	const imageName = `${Math.random()}-${
-		newCabin.image.name
-	}`.replaceAll(
+		newCabin?.image?.name
+	}`?.replaceAll(
 		"/",
 		""
 	); /* 0.123123123123123-imagename.jpg */
 
-	const imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
+	const imagePath = hasImagePath
+		? newCabin.image
+		: `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
 
-	// https://nwqjkultgmottyyzqfoh.supabase.co/storage/v1/object/public/cabin-images/cabin-001.jpg
+	// 1. Create/Edit a new cabin
+	let query = supabase.from("cabins");
 
-	// 1. Create a new cabin
-	const { error: storageError } = await supabase
-		.from("cabins")
-		.insert([{ ...newCabin, image: imagePath }])
-		.select();
+	//A)CREATE
+	if (!id)
+		query = query.insert([
+			{ ...newCabin, image: imagePath },
+		]);
 
-	if (storageError) {
+	//B)EDIT
+	if (id)
+		query = query
+			.update({ ...newCabin, image: imagePath })
+			.eq("id", id);
+
+	const { data, error } = await query
+		.select()
+		.single();
+
+	if (error) {
 		console.error(error);
 
 		throw new Error("Error creating cabin");
 	}
 
-	// 2.Upload the image to Supabase Storageconst { data, error } = await supabase
-	const { data, error } = await supabase.storage
-		.from("cabin-images")
-		.upload(imageName, newCabin.image);
+	// 2.Upload the image to Supabase Storage
+	const { error: storageError } =
+		await supabase.storage
+			.from("cabin-images")
+			.upload(imageName, newCabin.image);
 
 	// 3.Delete the cabin if the image upload fails
 	if (storageError) {
