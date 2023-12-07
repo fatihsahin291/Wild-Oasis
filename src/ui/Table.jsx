@@ -97,13 +97,13 @@ function Row({ children }) {
 	);
 }
 function Body({ data, render }) {
-	if (data.length === 0) {
+	if (data?.length === 0) {
 		return <Empty>No cabins to show</Empty>;
 	}
 
 	return (
 		<StyledBody role="rowgroup">
-			{data.map(render)}
+			{data?.map(render)}
 		</StyledBody>
 	);
 }
