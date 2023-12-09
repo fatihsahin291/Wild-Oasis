@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { formatCurrency } from "../../utils/helpers";
 import { useCheckin } from "./useCheckin";
 import { useSettings } from "../settings/useSettings";
+import { set } from "date-fns";
 
 const Box = styled.div`
 	/* Box */
