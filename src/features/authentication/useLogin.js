@@ -19,7 +19,7 @@ export function useLogin() {
 					["user"],
 					user.user
 				);
-				navigate("/dashboard");
+				navigate("/dashboard", { replace: true });
 			},
 			onError: (error) => {
 				toast.error(error.message);
