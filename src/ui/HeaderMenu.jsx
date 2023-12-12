@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Logout from "../features/authentication/Logout";
 import ButtonIcon from "./ButtonIcon";
+import DarkModeToggle from "./DarkModeToggle";
 
 const StyledHeaderMenu = styled.div`
 	display: flex;
@@ -22,6 +23,9 @@ function HeaderMenu() {
 				>
 					<HiOutlineUser />
 				</ButtonIcon>
+			</li>
+			<li>
+				<DarkModeToggle />
 			</li>
 			<li>
 				<Logout />
