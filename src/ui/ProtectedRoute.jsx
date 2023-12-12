@@ -12,11 +12,11 @@ const FullPage = styled.div`
 	justify-content: center;
 `;
 
-function ProtectedRoute({ children, ...rest }) {
+function ProtectedRoute({ children }) {
 	const navigate = useNavigate();
 
 	// 1. Load the authenticated user
-	const { user, isLoading, isAuthenticated } =
+	const { isLoading, isAuthenticated } =
 		useUser();
 
 	// 2. If the user is not authenticated, redirect to the login page
