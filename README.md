@@ -37,7 +37,7 @@ The project has the following structure:
 1. Clone the repository:
 
 ```bash
-git clone <[repository-url](https://github.com/fatihsahin291/Wild-Oasis)>
+git clone <https://github.com/fatihsahin291/Wild-Oasis>
 ```
 
 2. Install the dependencies:
