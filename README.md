@@ -1,6 +1,10 @@
 # The Wild Oasis
 
-### https://the-wild-oasis-fatih-291.netlify.app/bookings?page=1
+## Netlify Link
+### https://the-wild-oasis-fatih-291.netlify.app/dashboard
+
+## Vercel Link
+### https://the-wild-oasis-nine-sand.vercel.app/dashboard
 
 This is a React application that allows users to manage cabin bookings.
 
